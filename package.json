@@ -7,7 +7,8 @@
   "license": "MIT",
   "scripts": {
     "startLocalDynamoDB": "docker stop example-dynamo-db 2> /dev/null|| true && docker rm example-dynamo-db 2> /dev/null || true && docker run -p 8000:8000 --name example-dynamo-db -d amazon/dynamodb-local -jar DynamoDBLocal.jar -sharedDb -dbPath .",
-    "start": "ts-node ./src/index.ts"
+    "start": "ts-node ./src/index.ts",
+    "test": "jest"
   },
   "dependencies": {
     "aws-sdk": "^2.819.0",
