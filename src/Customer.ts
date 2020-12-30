@@ -14,10 +14,17 @@ AWS.config.update({
 
 const DocumentClient = new DynamoDB.DocumentClient();
 
-const MyTable = new Table({
-  ...dynamoSdkToToolbox(tableDefinition),
-  DocumentClient,
-});
+export const getToolboxTable = (
+  tableName?: string,
+  documentClient?: DynamoDB.DocumentClient
+) =>
+  new Table({
+    ...dynamoSdkToToolbox(tableDefinition),
+    name: tableName || dynamoSdkToToolbox(tableDefinition).name,
+    DocumentClient: documentClient || DocumentClient,
+  });
+
+const MyTable = getToolboxTable();
 
 export const Customer = new Entity({
   name: "Customer",
@@ -30,3 +37,16 @@ export const Customer = new Entity({
   },
   table: MyTable,
 });
+
+export const getCustomerEntity = (table: Table) =>
+  new Entity({
+    name: "Customer",
+    attributes: {
+      id: { partitionKey: true }, // flag as partitionKey
+      sk: { hidden: true, sortKey: true }, // flag as sortKey and mark hidden
+      co: { alias: "company" }, // alias table attribute 'co' to 'company'
+      status: ["sk", 0], // composite key mapping
+      date_added: ["sk", 1], // composite key mapping
+    },
+    table,
+  });
