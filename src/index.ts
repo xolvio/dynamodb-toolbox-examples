@@ -12,14 +12,16 @@ const createTable = async () => {
 
 const run = async () => {
   await createTable();
-  const item = {
-    id: 123,
-    company: "ACME",
-    status: "active",
-    date_added: "2020-04-24",
-  };
 
-  await Customer.put(item);
+  await Customer.put({
+    id: 123,
+    age: 35,
+    name: 'Jane Smith',
+    emailVerified: true,
+    company: 'ACME',
+    status: 'active',
+    date_added: '2020-04-24'
+  });
 
   const itemToGet = {
     id: 123,
